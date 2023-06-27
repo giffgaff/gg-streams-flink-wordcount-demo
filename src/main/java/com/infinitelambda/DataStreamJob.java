@@ -1,5 +1,6 @@
 package com.infinitelambda;
 
+import java.util.regex.Pattern;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.serialization.SerializationSchema;
@@ -56,7 +57,12 @@ public class DataStreamJob {
     public static final class Tokenizer implements FlatMapFunction<String, Tuple2<String, Integer>> {
         @Override
         public void flatMap(String value, Collector<Tuple2<String, Integer>> out) {
-            out.collect(new Tuple2<>(value, 1));
+            Pattern pattern = Pattern.compile("^\\d\\d (loan|outright)");
+            if (pattern.matcher(value).find()) {
+                out.collect(new Tuple2<>(value, 1));
+            } else {
+                System.out.println("Err: incorrect value in msg: " + value);
+            }
         }
     }
 
