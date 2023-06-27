@@ -48,7 +48,7 @@ public class DataStreamJob {
         DataStream<String> rejectedWords =
             tokenised
                 .getSideOutput(rejectedInput)
-                .map(value -> "rejected: " + value, Types.STRING);
+                .map(value -> value, Types.STRING);
 
         KafkaSink<Tuple2<String, Integer>> sink = KafkaSink.<Tuple2<String, Integer>>builder()
                 .setBootstrapServers("localhost:9092")
