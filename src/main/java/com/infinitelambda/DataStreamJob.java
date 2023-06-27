@@ -56,13 +56,7 @@ public class DataStreamJob {
     public static final class Tokenizer implements FlatMapFunction<String, Tuple2<String, Integer>> {
         @Override
         public void flatMap(String value, Collector<Tuple2<String, Integer>> out) {
-            String[] words = value.toLowerCase().split("\\W+");
-
-            for (String word : words) {
-                if (word.length() > 0) {
-                    out.collect(new Tuple2<>(word, 1));
-                }
-            }
+            out.collect(new Tuple2<>(value, 1));
         }
     }
 
